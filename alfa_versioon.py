@@ -43,6 +43,114 @@ def add_set(conn, name):
     
     return set_id
 
+
+# Funktsioon et lisada kaart database
+
+def add_card(conn, set_id, word, definition):
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        INSERT INTO flashcards (set_id, word, definition)
+        VALUES (?, ?, ?)
+    ''', (set_id, word, definition))
+
+    card_id = cursor.lastrowid
+    conn.commit()
+
+    return card_id
+
+# Funktsioon kaartide saamiseks datast 
+
+def get_sets(conn):
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        SELECT id, name FROM flashcard_sets
+    ''')
+
+    rows = cursor.fetchall()
+    sets = {row[1]: row[0] for row in rows }   # Setide dictionary phmt
+
+    return sets
+
+
+# Funktsioon et saada kaardid spets setist
+
+def get_cards(conn, set_id):
+    cursor = conn.cursor
+
+    cursor.execute('''
+                   
+        SELECT word, definition FROM flashcards
+        WHERE set_id = ?
+    ''', (set_id,))
+
+    rows = cursor.fetchall()
+    cards = [(row[0], row[1]) for row in rows] # Tee kaartidest loetelu
+
+def delete_cards(conn, set_id):
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        DELETE FROM flashcards_sets
+        WHERE id = ?
+    ''', (set_id))
+
+    conn.commit()
+    sets_combobox.set('')
+    clear_flashcard_display()
+    populate_sets_combobox()
+
+    global current_cards, card_index
+    current_cards = []
+    card_index = 0
+
+
+# Funktsioon setide loomiseks
+def create_set():
+    set_name = set_name_var
+    if set_name:
+        if set_name not in get_sets(conn):
+            set_id = add_set(conn, set_name)
+            populate_sets_combobox()
+            set_name_var.set()
+
+
+            set_name_var.set('')
+            word_var.set('')
+            definition_var('')
+
+def add_word():
+    set_name = set_name_var.get()
+    word = word_var.get()
+    definition = definition_var.get()
+
+    if set_name and word and definition:
+        if set_name not in get_sets(conn):
+            set_id = add_set(conn. set_name)
+        else:
+            set_id = get_sets(conn)[set_name]
+
+        populate_sets_combobox()
+
+
+
+
+
+
+
+def populate_sets_combobox():
+    pass
+
+def clear_flashcard_display():
+    pass
+
+
+
+    
+
+
+
 if __name__ == '__main__':
     
     conn = sqlite3.connect('flashcards.db')
