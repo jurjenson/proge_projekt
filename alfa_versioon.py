@@ -18,7 +18,7 @@ def create_tables(conn):
 
     # Flashcard tabel loomine
     
-    cursor.execute('''
+    cursor.execute('''s
         CREATE TABLE IF NOT EXISTS flashcards_sets (
                   id INTEGER PRIMARY KEY AUTOINCREMENT,
                   set_id INTEGER NOT NULL,
@@ -140,16 +140,107 @@ def add_word():
 
 
 def populate_sets_combobox():
-    pass
+    sets_combobox['values'] = tuple(get_sets(conn).keys())
+
+# Funktsioon kustutamiseks seti
+
+def delete_selected_set():
+    set_name = sets_combobox.get()
+
+    if set_name:
+        result = messagebox.askyesno(
+            'Kinnitus', f'Kas oled kindel, et soovid valitud seti {set_name} kustutada?'
+        )
+
+        if result == tk.YES:
+            set_id = get_sets(conn)[set_name]
+            delete_set(conn, set_id)
+            populate_sets_combobox()
+            clear_flashcard_display()       
+
+def select_set():
+    set_name = sets_combobox.get()
+
+    if set_name:
+        set_id = get_sets(conn)[set_name]
+        cards = get_cards(conn, set_id)
+
+        if cards:
+            display_flashcards(cards)
+        else:
+            word_label.config(text='Selles setis pole flashcarde')
+            definiton_label.config(text='')
+    else:
+        global current_cards, card_index
+        current_cards = []
+        card_index = 0
+        clear_flashcard_display()
+
+
+def display_flashcards(cards):
+    global card_index
+    global current_cards
+
+    card_index = 0
+    current_cards = cards
+
+    if not cards:
+        clear_flashcard_display()
+    else:
+        show_card
+
+    show_card()
 
 def clear_flashcard_display():
-    pass
+    word_label.config(text='')
+    definiton_label.config(text='')
 
 
 
-    
+
+def show_card():
+    global card_index
+    global current_cards
+
+    if current_cards:
+        if 0 <= card_index < len(current_cards):
+            word, _ = current_cards[card_index]
+            word_label.config(text='')
+            definiton_label.config(text='')
+        else:
+            clear_flashcard_display()
+
+    else:
+        clear_flashcard_display()
+
+# Funktsioon kaardi flippimiseks
+
+def flip_card():
+    global card_index
+    global current_cards
+
+    if current_cards:
+        _, definition = current_cards[card_index]
+        definiton_label.config(text=definition)
+
+# Funktsioon kaardi liigutamiseks edasi
+
+def next_card():
+    global card_index
+    global current_cards
+
+    if current_cards:
+        card_index = min(card_index + 1, len(current_cards) -1)
+        show_card()
 
 
+def prev_card():
+    global card_index
+    global current_cards
+
+    if current_cards:
+        card_index = max(card_index - 1, 0)
+        show_card()
 
 if __name__ == '__main__':
     
@@ -190,11 +281,11 @@ if __name__ == '__main__':
     
     # Nupp lisamiseks
     
-    ttk.Button(create_set_frame, text="Lisa küsimus").pack(padx=5, pady=10)
+    ttk.Button(create_set_frame, text="Lisa küsimus", command=add_word).pack(padx=5, pady=10)
     
     # Nupp salvestamiseks
     
-    ttk.Button(create_set_frame, text="Salvesta set").pack(padx=5, pady=10)
+    ttk.Button(create_set_frame, text="Salvesta set", command=create_set).pack(padx=5, pady=10)
     
     select_set_frame = ttk.Frame(notebook)
     notebook.add(select_set_frame, text='Vali set')
@@ -206,11 +297,11 @@ if __name__ == '__main__':
     
     # Nupp, et valida set
     
-    ttk.Button(select_set_frame, text='Vali set').pack(padx=5, pady=5)
+    ttk.Button(select_set_frame, text='Vali set', command=select_set).pack(padx=5, pady=5)
     
     # Nupp, et kustutada set
     
-    ttk.Button(select_set_frame, text='Kustuta').pack(padx=5, pady=5)
+    ttk.Button(select_set_frame, text='Kustuta', command=delete_selected_set).pack(padx=5, pady=5)
 
     # Õppimise tab
     
@@ -233,18 +324,18 @@ if __name__ == '__main__':
     
     # Nupp, et vahetada kaardi pooli
     
-    ttk.Button(flashcards_frame, text='Flip').pack(side='left', padx=5, pady=5)
+    ttk.Button(flashcards_frame, text='Flip', command=flip_card).pack(side='left', padx=5, pady=5)
 
     # Nupp, et vaadata järgmist kaarti
     
-    ttk.Button(flashcards_frame, text='Järgmine').pack(side ='right', padx=5, pady=5)
+    ttk.Button(flashcards_frame, text='Järgmine', command=next_card).pack(side ='right', padx=5, pady=5)
 
 
     # Nupp, et vaadata eelmist kaarti
     
-    ttk.Button(flashcards_frame, text='Eelmine').pack(side ='right', padx=5, pady=5)
+    ttk.Button(flashcards_frame, text='Eelmine', command=prev_card).pack(side ='right', padx=5, pady=5)
     
     
-
+    populate_sets_combobox()
     
     root.mainloop()
