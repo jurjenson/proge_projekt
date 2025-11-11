@@ -1,10 +1,82 @@
+import sqlite3
+import tkinter as tk
+from tkinter import ttk
+from tkinter import messagebox
+from ttkbootstrap import Style
+
+#kaartide sisu
 flashcards = [
 {"küsimus": "paarisfunktsiooni definitsioon", "vastus":"f(-x) = f(x)"},
-{"küsimus":"paaritu funktsiooni definitsioon", "vastus":"f(-x)=-f(x)},
+{"küsimus":"paaritu funktsiooni definitsioon", "vastus":"f(-x)=-f(x)"},
 {"küsimus":"liitfunktsiooni definitsioon", "vastus":"(g ◦ f)(x) = g(f(x))"},
-{"küsimus":"Paarifunktsiooni graafik on sümmeetriline ... (mille suhtes?), "vastus":"y-telje suhtes"},
+{"küsimus":"Paarifunktsiooni graafik on sümmeetriline ... (mille suhtes?)", "vastus":"y-telje suhtes"},
 {"küsimus":"Paaritu funktsiooni graafik on sümmeetriline ... (mille suhtes?)", "vastus":"nullpunkti suhtes"},
 {"küsimus":"Pöördfunktsiooni tingimus", "vastus":"Funktsioon f on pööratav parajasti siis, kui ta on üksühene"},
 {"küsimus":"Pöörfunktsiooni leidmiseks vajalikud sammud", "vastus":"1. avalda võrrandist y = f(x) muutuja x muutuja y kaudu, 2. vaheta tähised x ja y, 3. kirjuta välja pöördfunktsioon"},
 {"küsimus":"Funktsioon f on pidev hulgal X, kui", "vastus":"f on pidev selle hulga igas punktis"},
 ]
+
+root = tk.Tk()
+root.title('Kõrgema matemaatika alused I')
+root.geometry('800x600')
+
+stiil = Style(theme='journal')
+stiil.configure('TLabel', font=('TkDefaultFont',20))
+stiil.configure('Button', font=('TkDefaultFont',18))
+
+notebook = ttk.Notebook(root)
+notebook.pack(fill='both', expand=True)
+
+õpi_raam = ttk.Frame(notebook)
+notebook.add(õpi_raam, text='Õpime')
+
+kaardi_indeks = 0
+näita_vastus = False
+
+def kuva_kaart():
+    kaart = flashcards[kaardi_indeks]
+    if näita_vastust:
+      sona_silt.config(text=kaart['vastus'])
+    else:
+      sona_silt.config(text=kaart['küsimus'])
+
+
+
+def pööra_kaart():
+    global näita_vastust
+    näita_vastust = not näita_vastust
+    kuva_kaart()
+
+
+def järgmine_kaart():
+    global kaardi_indeks, näita_vastust
+
+    kaardi_indeks = (kaardi_indeks + 1) % len(flashcards)
+    näita_vastust = False
+    kuva_kaart()
+
+
+def eelmine_kaart():
+    global kaardi_indeks, näita_vastust
+
+    kaardi_indeks = (kaardi_indeks - 1) % len(flashcards)
+    näita_vastust = False
+    kuva_kaart()
+
+sona_silt = ttk.Label(õpi_raam, text='', font=('TkDefaultFont', 24))
+sona_silt.pack(padx=5, pady=40)
+
+ttk.Button(õpi_raam, text='Flip', command=pööra_kaart).pack(side='left', padx=5, pady=5)
+
+# Nupp, et vaadata järgmist kaarti
+    
+ttk.Button(õpi_raam, text='Järgmine', command=järgmine_kaart).pack(side ='right', padx=5, pady=5)
+
+# Nupp, et vaadata eelmist kaarti
+    
+ttk.Button(õpi_raam, text='Eelmine', command=eelmine_kaart).pack(side ='right', padx=5, pady=5)
+
+kuva_kaart()
+
+root.mainloop()
+    
