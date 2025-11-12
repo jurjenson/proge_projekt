@@ -1,3 +1,13 @@
+"""
+Projekt: Õppekaardid
+Autorid: Annabel Jürjenson, Minna Marie Kask
+Kirjeldus: 
+Kasutaja saab valida õppimiseks valmis komplekti õppekaarte või ise komplekt luua. Valmis komplektina on kasutamiseks kursuse "Kõrgem matemaatika I (alused)" õppekaardid. 
+Programmi kasutamiseks on vaja alla laadida programmifail ning lisaks ttkbootstrap moodul. Programmi on võimalik käivitada näiteks Thonny-ga. 
+Kasutatud teegid: tkinter
+"""
+
+
 import sqlite3
 import tkinter as tk
 from tkinter import ttk
@@ -184,9 +194,7 @@ def kuva_kaardid(kaardid):
     if not kaardid:
         clear_kaardid()
     else:
-        naita_kaart
-
-    naita_kaart()
+        naita_kaart()
 
 def clear_kaardid():
     sona_silt.config(text='')
@@ -343,3 +351,4 @@ if __name__ == '__main__':
     taida_seti_valik()
     
     root.mainloop()
+
