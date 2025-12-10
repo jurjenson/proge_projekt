@@ -8,35 +8,32 @@ def create_tables(conn):
     cursor = conn.cursor()
     
     cursor.execute('''
-        CREATE TABLE IF NOT EXISTS flashcards_sets (
+        CREATE TABLE IF NOT EXISTS flashcard_sets (
                   id INTEGER PRIMARY KEY AUTOINCREMENT,
                   name TEXT NOT NULL
-        
         )
     ''')
 
 
     # Flashcard tabel loomine
     
-    cursor.execute('''s
-        CREATE TABLE IF NOT EXISTS flashcards_sets (
-                  id INTEGER PRIMARY KEY AUTOINCREMENT,
-                  set_id INTEGER NOT NULL,
-                  word TEXT NOT NULL,
-                  definition NOT NULL,
-                  FOREIGN KEY (set_id) REFERENCES flashcard_sets(id)
-        
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS flashcards (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            set_id INTEGER NOT NULL,
+            word TEXT NOT NULL,
+            definition TEXT NOT NULL,
+            FOREIGN KEY (set_id) REFERENCES flashcard_sets(id)
         )
     ''')
 
 def add_set(conn, name):
-    cursor = conn.sursor()
+    cursor = conn.cursor()
     
     cursor.execute('''
-        INSERT INTO flashcards_sets (name)
+        INSERT INTO flashcard_sets (name)
         VALUES (?)
-        
-    ''', (name, ))
+    ''', (name,))
     
     set_id = cursor.lastrowid
     conn.commit()
@@ -77,24 +74,24 @@ def get_sets(conn):
 # Funktsioon et saada kaardid spets setist
 
 def get_cards(conn, set_id):
-    cursor = conn.cursor
+    cursor = conn.cursor()
 
-    cursor.execute('''
-                   
+    cursor.execute('''  
         SELECT word, definition FROM flashcards
         WHERE set_id = ?
     ''', (set_id,))
 
     rows = cursor.fetchall()
     cards = [(row[0], row[1]) for row in rows] # Tee kaartidest loetelu
+    return cards
 
-def delete_cards(conn, set_id):
+def delete_set(conn, set_id):
     cursor = conn.cursor()
 
     cursor.execute('''
-        DELETE FROM flashcards_sets
+        DELETE FROM flashcard_sets
         WHERE id = ?
-    ''', (set_id))
+    ''', (set_id,))
 
     conn.commit()
     sets_combobox.set('')
@@ -108,17 +105,17 @@ def delete_cards(conn, set_id):
 
 # Funktsioon setide loomiseks
 def create_set():
-    set_name = set_name_var
+    set_name = set_name_var.get()
     if set_name:
         if set_name not in get_sets(conn):
             set_id = add_set(conn, set_name)
             populate_sets_combobox()
-            set_name_var.set()
+            set_name_var.set('')
 
 
             set_name_var.set('')
             word_var.set('')
-            definition_var('')
+            definition_var.set('')
 
 def add_word():
     set_name = set_name_var.get()
@@ -127,17 +124,19 @@ def add_word():
 
     if set_name and word and definition:
         if set_name not in get_sets(conn):
-            set_id = add_set(conn. set_name)
+            set_id = add_set(conn, set_name)
         else:
             set_id = get_sets(conn)[set_name]
+        
+        add_card(conn, set_id, word, definition)
+
+        word_var.set('')
+        definition_var.set('')
 
         populate_sets_combobox()
 
 
-
-
-
-
+# Funktsioon setide comboboxi täitmiseks
 
 def populate_sets_combobox():
     sets_combobox['values'] = tuple(get_sets(conn).keys())
@@ -205,7 +204,7 @@ def show_card():
     if current_cards:
         if 0 <= card_index < len(current_cards):
             word, _ = current_cards[card_index]
-            word_label.config(text='')
+            word_label.config(text=word)
             definiton_label.config(text='')
         else:
             clear_flashcard_display()
