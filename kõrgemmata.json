@@ -1,0 +1,34 @@
+{
+    "kaardid": [
+        {
+            "küsimus": "paarisfunktsiooni definitsioon", 
+            "vastus":"f(-x) = f(x)"
+        },
+        {
+            "küsimus":"paaritu funktsiooni definitsioon", 
+            "vastus":"f(-x)=-f(x)"
+        },
+        {
+            "küsimus":"liitfunktsiooni definitsioon", 
+            "vastus":"(g ◦ f)(x) = g(f(x))"
+        },
+        {
+            "küsimus":"Paarifunktsiooni graafik on sümmeetriline ... (mille suhtes?)", 
+            "vastus":"y-telje suhtes"
+        },
+        {
+            "küsimus":"Paaritu funktsiooni graafik on sümmeetriline ... (mille suhtes?)", 
+            "vastus":"nullpunkti suhtes"
+        },
+        {
+            "küsimus":"Pöördfunktsiooni tingimus", 
+            "vastus":"Funktsioon f on pööratav parajasti siis, kui ta on üksühene"},
+        {
+            "küsimus":"Pöörfunktsiooni leidmiseks vajalikud sammud", 
+            "vastus":"1. avalda võrrandist y = f(x) muutuja x muutuja y kaudu, 2. vaheta tähised x ja y, 3. kirjuta välja pöördfunktsioon"},
+        {
+            "küsimus":"Funktsioon f on pidev hulgal X, kui", 
+            "vastus":"f on pidev selle hulga igas punktis"
+        }
+    ]
+}
