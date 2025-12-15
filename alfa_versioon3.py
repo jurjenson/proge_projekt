@@ -12,12 +12,12 @@ from tkinter import messagebox
 import customtkinter as ctk
 
 
-# -----------------------------
-#   VÄRVIPALETT – PASTELNE
-# -----------------------------
 
-PASTEL_TOP = "#ffe7f3"       # ülemine gradient – hästi õrn roosa
-PASTEL_BOTTOM = "#e3f6ff"    # alumine gradient – hästi õrn sinine
+#   VÄRVIPALETT – PASTELNE
+
+
+PASTEL_TOP = "#ffe7f3"       # ülemine gradient 
+PASTEL_BOTTOM = "#e3f6ff"    # alumine gradient 
 ACCENT_MAIN = "#f6aecb"      # põhi-aktsent (nupud, pealkiri)
 ACCENT_MAIN_DARK = "#ec8fb4" # tumedam hover
 ACCENT_SOFT_BLUE = "#b7d8ff" # lisa-aktsent
@@ -25,9 +25,9 @@ TEXT_DARK = "#4b4b5a"        # tumedam tekst
 TEXT_SOFT = "#7a7a8a"        # pehmem tekst
 
 
-# -----------------------------
+
 #   ANDMEBAASIFUNKTSIOONID
-# -----------------------------
+
 
 def loo_tabelid(uhendus):
     kursor = uhendus.cursor()
@@ -118,9 +118,9 @@ def kustuta_set(uhendus, seti_id):
     kaardi_indeks = 0
 
 
-# -----------------------------
+
 #   LOOGIKA – SETID JA KAARDID
-# -----------------------------
+
 
 def loo_set():
     seti_nimi = seti_nimi_var.get().strip()
@@ -252,9 +252,9 @@ def eelmine_kaart():
         naita_kaart()
 
 
-# -----------------------------
+
 #   PROGRESS BAR FUNKTSIOON
-# -----------------------------
+
 
 def uuenda_progress():
     """Uuendab progress bari ja tekstilist näitajat (nt 3 / 10)."""
@@ -271,12 +271,10 @@ def uuenda_progress():
         progress_label.configure(text="0 / 0")
 
 
-# -----------------------------
-#   GRAAFIKA – PASTELNE GRADIENT
-# -----------------------------
+
+#   GRAAFIKA 
 
 def joonista_gradient(canvas, värv1=PASTEL_TOP, värv2=PASTEL_BOTTOM):
-    """Lihtne vertikaalne gradient Canvasel."""
     canvas.update()
     w = canvas.winfo_width()
     h = canvas.winfo_height()
@@ -301,9 +299,7 @@ def joonista_gradient(canvas, värv1=PASTEL_TOP, värv2=PASTEL_BOTTOM):
     canvas.lower("gradient")
 
 
-# -----------------------------
 #   MAIN
-# -----------------------------
 
 if __name__ == '__main__':
     uhendus = sqlite3.connect('flashcards.db')
@@ -314,7 +310,7 @@ if __name__ == '__main__':
     ctk.set_default_color_theme("blue")  # baas, aga me override'ime värvid nagunii
 
     root = ctk.CTk()
-    root.title("Õppekaardid – pastelne")
+    root.title("Õppekaardid")
     root.geometry("900x650")
     root.minsize(800, 600)
 
@@ -327,7 +323,6 @@ if __name__ == '__main__':
 
     root.bind("<Configure>", uuenda_gradient)
 
-    # Fondid  👉 SIIN MUUDAD TEKSTI SUURUSI
     põhifont = ("Segoe UI", 18)          # tavaline tekst
     pealkiri_font = ("Segoe UI Semibold", 30)  # pealkiri
     suur_font = ("Segoe UI Semibold", 22)      # nupud / ala-pealkirjad
