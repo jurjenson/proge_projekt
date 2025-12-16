@@ -355,35 +355,46 @@ if __name__ == '__main__':
     subtitle_label.pack(pady=(0, 12))
 
     # Tabview
-    tabview = ctk.CTkTabview(main_frame,
-                             segmented_button_selected_color=ACCENT_MAIN,
-                             segmented_button_selected_hover_color=ACCENT_MAIN_DARK)
-    tabview.pack(fill="both", expand=True, padx=20, pady=20)
+    tabview = ctk.CTkTabview(main_frame)
+tabview.pack(fill="both", expand=True, padx=20, pady=20)
 
-    tab_looset = tabview.add("Loo set")
-    tab_valiset = tabview.add("Vali set")
-    tab_õpi = tabview.add("Õpime")
-    tab_mata = tabview.add("Kõrge matemaatika alused")
-    tabview._segmented_button.configure(font=tab_font)
+tab_looset = tabview.add("Loo set")
+tab_valiset = tabview.add("Vali set")
+tab_õpi = tabview.add("Õpime")
+tab_mata = tabview.add("Kõrge matemaatika alused")
+
+# NÜÜD paneme segmented buttoni stiili (muidu jääb tekst "kaduma")
+tabview._segmented_button.configure(
+    font=tab_font,
+    fg_color="#ffffff",
+    selected_color=ACCENT_MAIN,
+    selected_hover_color=ACCENT_MAIN_DARK,
+    unselected_color="#ffffff",
+    unselected_hover_color="#fdf1f7",
+    text_color=TEXT_DARK,
+    text_color_disabled=TEXT_SOFT
+)
+
 
 
     # ---------------- LOO SET TAB ----------------
 
-    seti_nimi_var = ctk.StringVar()
-    sona_var = ctk.StringVar()
-    definitsioon_var = ctk.StringVar()
+seti_nimi_var = ctk.StringVar()
+sona_var = ctk.StringVar()
+    
+definitsioon_var = ctk.StringVar()
 
-    looset_frame = ctk.CTkFrame(tab_looset, fg_color="transparent")
-    looset_frame.pack(fill="both", expand=True, padx=10, pady=10)
+looset_frame = ctk.CTkFrame(tab_looset, fg_color="transparent")
+looset_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
-    ctk.CTkLabel(
+ctk.CTkLabel(
         looset_frame,
         text="Seti nimi:",
         font=suur_font,
         text_color=TEXT_DARK
     ).pack(anchor="w", pady=(0, 5))
 
-    ctk.CTkEntry(
+ctk.CTkEntry(
         looset_frame,
         textvariable=seti_nimi_var,
         font=põhifont,
@@ -393,14 +404,14 @@ if __name__ == '__main__':
         corner_radius=12
     ).pack(fill="x", pady=(0, 10))
 
-    ctk.CTkLabel(
+ctk.CTkLabel(
         looset_frame,
         text="Küsimus:",
         font=suur_font,
         text_color=TEXT_DARK
     ).pack(anchor="w", pady=(5, 5))
 
-    ctk.CTkEntry(
+ctk.CTkEntry(
         looset_frame,
         textvariable=sona_var,
         font=põhifont,
@@ -410,14 +421,14 @@ if __name__ == '__main__':
         corner_radius=12
     ).pack(fill="x", pady=(0, 10))
 
-    ctk.CTkLabel(
+ctk.CTkLabel(
         looset_frame,
         text="Vastus:",
         font=suur_font,
         text_color=TEXT_DARK
     ).pack(anchor="w", pady=(5, 5))
 
-    ctk.CTkEntry(
+ctk.CTkEntry(
         looset_frame,
         textvariable=definitsioon_var,
         font=põhifont,
@@ -427,10 +438,10 @@ if __name__ == '__main__':
         corner_radius=12
     ).pack(fill="x", pady=(0, 15))
 
-    nuppude_frame_looset = ctk.CTkFrame(looset_frame, fg_color="transparent")
-    nuppude_frame_looset.pack(pady=10)
+nuppude_frame_looset = ctk.CTkFrame(looset_frame, fg_color="transparent")
+nuppude_frame_looset.pack(pady=10)
 
-    ctk.CTkButton(
+ctk.CTkButton(
         nuppude_frame_looset,
         text="Lisa küsimus",
         command=lisa_sona,
@@ -440,7 +451,7 @@ if __name__ == '__main__':
         corner_radius=20
     ).pack(side="left", padx=10)
 
-    ctk.CTkButton(
+ctk.CTkButton(
         nuppude_frame_looset,
         text="Salvesta set",
         command=loo_set,
@@ -455,19 +466,19 @@ if __name__ == '__main__':
 
     # ---------------- VALI SET TAB ----------------
 
-    valiset_frame = ctk.CTkFrame(tab_valiset, fg_color="transparent")
-    valiset_frame.pack(fill="both", expand=True, padx=10, pady=10)
+valiset_frame = ctk.CTkFrame(tab_valiset, fg_color="transparent")
+valiset_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
-    seti_valik_var = ctk.StringVar()
+seti_valik_var = ctk.StringVar()
 
-    ctk.CTkLabel(
+ctk.CTkLabel(
         valiset_frame,
         text="Vali set:",
         font=suur_font,
         text_color=TEXT_DARK
     ).pack(anchor="w", pady=(0, 5))
 
-    seti_valik = ctk.CTkComboBox(
+seti_valik = ctk.CTkComboBox(
         valiset_frame,
         variable=seti_valik_var,
         values=[],
@@ -478,12 +489,12 @@ if __name__ == '__main__':
         button_hover_color=ACCENT_MAIN_DARK,
         corner_radius=12
     )
-    seti_valik.pack(fill="x", pady=(0, 15))
+seti_valik.pack(fill="x", pady=(0, 15))
 
-    nuppude_frame_valiset = ctk.CTkFrame(valiset_frame, fg_color="transparent")
-    nuppude_frame_valiset.pack(pady=10)
+nuppude_frame_valiset = ctk.CTkFrame(valiset_frame, fg_color="transparent")
+nuppude_frame_valiset.pack(pady=10)
 
-    ctk.CTkButton(
+ctk.CTkButton(
         nuppude_frame_valiset,
         text="Vali set",
         command=vali_set,
@@ -493,7 +504,7 @@ if __name__ == '__main__':
         corner_radius=20
     ).pack(side="left", padx=10)
 
-    ctk.CTkButton(
+ctk.CTkButton(
         nuppude_frame_valiset,
         text="Kustuta set",
         command=kustuta_valitud_set,
@@ -508,21 +519,21 @@ if __name__ == '__main__':
 
     # ---------------- ÕPIME TAB ----------------
 
-    õpi_frame = ctk.CTkFrame(tab_õpi, fg_color="transparent")
-    õpi_frame.pack(fill="both", expand=True, padx=10, pady=10)
+õpi_frame = ctk.CTkFrame(tab_õpi, fg_color="transparent")
+õpi_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
-    kaardi_indeks = 0
-    aktiivsed_kaardid = []
+kaardi_indeks = 0
+aktiivsed_kaardid = []
 
-    sona_silt = ctk.CTkLabel(
+sona_silt = ctk.CTkLabel(
         õpi_frame,
         text="",
         font=("Segoe UI Semibold", 26),
         text_color=TEXT_DARK
     )
-    sona_silt.pack(pady=(30, 15))
+sona_silt.pack(pady=(30, 15))
 
-    definitsiooni_silt = ctk.CTkLabel(
+definitsiooni_silt = ctk.CTkLabel(
         õpi_frame,
         text="",
         font=põhifont,
@@ -530,31 +541,31 @@ if __name__ == '__main__':
         justify="center",
         text_color=TEXT_SOFT
     )
-    definitsiooni_silt.pack(pady=(0, 20))
+definitsiooni_silt.pack(pady=(0, 20))
 
     # --- PROGRESS LABEL + BAR ---
-    progress_label = ctk.CTkLabel(
+progress_label = ctk.CTkLabel(
         õpi_frame,
         text="0 / 0",
         font=põhifont,
         text_color=TEXT_SOFT
     )
-    progress_label.pack(pady=(0, 5))
+progress_label.pack(pady=(0, 5))
 
-    progress_bar = ctk.CTkProgressBar(
+progress_bar = ctk.CTkProgressBar(
         õpi_frame,
         progress_color=ACCENT_MAIN,
         fg_color="#f3f3f7",
         corner_radius=10,
         height=12
     )
-    progress_bar.pack(fill="x", padx=80, pady=(0, 20))
-    progress_bar.set(0)
+progress_bar.pack(fill="x", padx=80, pady=(0, 20))
+progress_bar.set(0)
 
-    õpi_nuppude_frame = ctk.CTkFrame(õpi_frame, fg_color="transparent")
-    õpi_nuppude_frame.pack(pady=10)
+õpi_nuppude_frame = ctk.CTkFrame(õpi_frame, fg_color="transparent")
+õpi_nuppude_frame.pack(pady=10)
 
-    ctk.CTkButton(
+ctk.CTkButton(
         õpi_nuppude_frame,
         text="Eelmine",
         command=eelmine_kaart,
@@ -568,7 +579,7 @@ if __name__ == '__main__':
         width=120
     ).pack(side="left", padx=10)
 
-    ctk.CTkButton(
+ctk.CTkButton(
         õpi_nuppude_frame,
         text="Flip",
         command=pööra_kaart,
@@ -579,7 +590,7 @@ if __name__ == '__main__':
         width=120
     ).pack(side="left", padx=10)
 
-    ctk.CTkButton(
+ctk.CTkButton(
         õpi_nuppude_frame,
         text="Järgmine",
         command=järgmine_kaart,
@@ -593,37 +604,41 @@ if __name__ == '__main__':
         width=120
     ).pack(side="left", padx=10)
 
-    # ---------------- MATA TAB ----------------
+def hakka_opppima():
+    tabview.set("Õpime")
 
-    mata_frame = ctk.CTkFrame(tab_mata, fg_color="transparent")
-    mata_frame.pack(fill="both", expand=True, padx=10, pady=10)
+# ---------------- MATA TAB ----------------
 
-    ctk.CTkLabel(
-        mata_frame,
-        text="Tere tulemast kõrge matemaatika alustesse!",
-        font=pealkiri_font,
-        text_color=ACCENT_MAIN
-    ).pack(pady=(20, 8))
+mata_frame = ctk.CTkFrame(tab_mata, fg_color="transparent")
+mata_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
-    ctk.CTkLabel(
-        mata_frame,
-        text="Siia saad lisada eraldi info, lingid, ülesanded jne.",
-        font=põhifont,
-        text_color=TEXT_SOFT
-    ).pack(pady=(0, 20))
+ctk.CTkLabel(
+    mata_frame,
+    text="Tere tulemast kõrge matemaatika alustesse!",
+    font=pealkiri_font,
+    text_color=ACCENT_MAIN
+).pack(pady=(20, 8))
 
-    ctk.CTkButton(
-        mata_frame,
-        text="Hakkame õppima",
-        font=suur_font,
-        fg_color=ACCENT_SOFT_BLUE,
-        hover_color="#9ec8ff",
-        text_color=TEXT_DARK,
-        corner_radius=20
-    ).pack(pady=10)
+ctk.CTkLabel(
+    mata_frame,
+    text="Siia saad lisada eraldi info, lingid, ülesanded jne.",
+    font=põhifont,
+    text_color=TEXT_SOFT
+).pack(pady=(0, 20))
 
-    # Täida seti valik alguses + algne progress
-    taida_seti_valik()
-    uuenda_progress()
+ctk.CTkButton(
+    mata_frame,
+    text="Hakkame õppima",
+    font=suur_font,
+    fg_color=ACCENT_SOFT_BLUE,
+    hover_color="#9ec8ff",
+    text_color=TEXT_DARK,
+    corner_radius=20,
+    command=hakka_opppima
+).pack(pady=10)
 
-    root.mainloop()
+# Täida seti valik alguses + algne progress 
+taida_seti_valik() 
+uuenda_progress() 
+
+root.mainloop()
