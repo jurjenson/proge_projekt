@@ -1,0 +1,382 @@
+"""
+Projekt: Õppekaardid
+Autorid: Annabel Jürjenson, Minna Marie Kask
+Kirjeldus: 
+Kasutaja saab valida õppimiseks valmis komplekti õppekaarte või ise komplekt luua. Valmis komplektina on kasutamiseks kursuse "Kõrgem matemaatika I (alused)" õppekaardid. 
+Programmi kasutamiseks on vaja alla laadida programmifail ning lisaks ttkbootstrap moodul. Programmi on võimalik käivitada näiteks Thonny-ga. 
+Kasutatud teegid: tkinter
+"""
+
+import sqlite3
+import tkinter as tk
+from tkinter import messagebox
+
+# ---> kasutame ttkbootstrap-i ttk vidinaid
+from ttkbootstrap import Style
+from tkinter import ttk
+
+
+
+def loo_tabelid(uhendus):
+    kursor = uhendus.cursor()
+    
+    kursor.execute('''
+        CREATE TABLE IF NOT EXISTS flashcard_sets (
+                  id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  name TEXT NOT NULL
+        )
+    ''')
+
+    kursor.execute('''
+        CREATE TABLE IF NOT EXISTS flashcards (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            set_id INTEGER NOT NULL,
+            word TEXT NOT NULL,
+            definition TEXT NOT NULL,
+            FOREIGN KEY (set_id) REFERENCES flashcard_sets(id)
+        )
+    ''')
+
+def lisa_set(uhendus, nimi):
+    kursor = uhendus.cursor()
+    
+    kursor.execute('''
+        INSERT INTO flashcard_sets (name)
+        VALUES (?)
+    ''', (nimi,))
+    
+    seti_id = kursor.lastrowid
+    uhendus.commit()
+    
+    return seti_id
+
+def lisa_kaart(uhendus, seti_id, sona, definitsioon):
+    kursor = uhendus.cursor()
+
+    kursor.execute('''
+        INSERT INTO flashcards (set_id, word, definition)
+        VALUES (?, ?, ?)
+    ''', (seti_id, sona, definitsioon))
+
+    kaardi_id = kursor.lastrowid
+    uhendus.commit()
+
+    return kaardi_id
+
+def saa_setid(uhendus):
+    kursor = uhendus.cursor()
+
+    kursor.execute('''
+        SELECT id, name FROM flashcard_sets
+    ''')
+
+    read = kursor.fetchall()
+    setid = {rida[1]: rida[0] for rida in read }
+
+    return setid
+
+def saa_kaardid(uhendus, seti_id):
+    kursor = uhendus.cursor()
+
+    kursor.execute('''  
+        SELECT word, definition FROM flashcards
+        WHERE set_id = ?
+    ''', (seti_id,))
+
+    read = kursor.fetchall()
+    kaardid = [(rida[0], rida[1]) for rida in read]
+    return kaardid
+
+def kustuta_set(uhendus, seti_id):
+    kursor = uhendus.cursor()
+
+    kursor.execute('''
+        DELETE FROM flashcard_sets
+        WHERE id = ?
+    ''', (seti_id,))
+
+    uhendus.commit()
+    seti_valik.set('')
+    clear_kaardid()
+    taida_seti_valik()
+
+    global aktiivsed_kaardid, kaardi_indeks
+    aktiivsed_kaardid = []
+    kaardi_indeks = 0
+
+def loo_set():
+    seti_nimi = seti_nimi_var.get()
+    if seti_nimi:
+        if seti_nimi not in saa_setid(uhendus):
+            lisa_set(uhendus, seti_nimi)
+            taida_seti_valik()
+            seti_nimi_var.set('')
+            sona_var.set('')
+            definitsioon_var.set('')
+
+def lisa_sona():
+    seti_nimi = seti_nimi_var.get()
+    sona = sona_var.get()
+    definitsioon = definitsioon_var.get()
+
+    if seti_nimi and sona and definitsioon:
+        if seti_nimi not in saa_setid(uhendus):
+            seti_id = lisa_set(uhendus, seti_nimi)
+        else:
+            seti_id = saa_setid(uhendus)[seti_nimi]
+        
+        lisa_kaart(uhendus, seti_id, sona, definitsioon)
+
+        sona_var.set('')
+        definitsioon_var.set('')
+
+        taida_seti_valik()
+
+def taida_seti_valik():
+    seti_valik['values'] = tuple(saa_setid(uhendus).keys())
+
+def kustuta_valitud_set():
+    seti_nimi = seti_valik.get()
+
+    if seti_nimi:
+        tulemus = messagebox.askyesno(
+            'Kinnitus', f'Kas oled kindel, et soovid valitud seti {seti_nimi} kustutada?'
+        )
+
+        if tulemus == tk.YES:
+            seti_id = saa_setid(uhendus)[seti_nimi]
+            kustuta_set(uhendus, seti_id)
+            taida_seti_valik()
+            clear_kaardid()       
+
+def vali_set():
+    seti_nimi = seti_valik.get()
+
+    if seti_nimi:
+        seti_id = saa_setid(uhendus)[seti_nimi]
+        kaardid = saa_kaardid(uhendus, seti_id)
+
+        if kaardid:
+            kuva_kaardid(kaardid)
+        else:
+            sona_silt.config(text='Selles setis pole flashcarde')
+            definitsiooni_silt.config(text='')
+    else:
+        global aktiivsed_kaardid, kaardi_indeks
+        aktiivsed_kaardid = []
+        kaardi_indeks = 0
+        clear_kaardid()
+
+def kuva_kaardid(kaardid):
+    global kaardi_indeks
+    global aktiivsed_kaardid
+
+    kaardi_indeks = 0
+    aktiivsed_kaardid = kaardid
+
+    if not kaardid:
+        clear_kaardid()
+    else:
+        naita_kaart()
+
+def clear_kaardid():
+    sona_silt.config(text='')
+    definitsiooni_silt.config(text='')
+
+def naita_kaart():
+    global kaardi_indeks
+    global aktiivsed_kaardid
+
+    if aktiivsed_kaardid:
+        if 0 <= kaardi_indeks < len(aktiivsed_kaardid):
+            sona, _ = aktiivsed_kaardid[kaardi_indeks]
+            sona_silt.config(text=sona)
+            definitsiooni_silt.config(text='')
+        else:
+            clear_kaardid()
+    else:
+        clear_kaardid()
+
+def pööra_kaart():
+    global kaardi_indeks
+    global aktiivsed_kaardid
+
+    if aktiivsed_kaardid:
+        _, definitsioon = aktiivsed_kaardid[kaardi_indeks]
+        definitsiooni_silt.config(text=definitsioon)
+
+def järgmine_kaart():
+    global kaardi_indeks
+    global aktiivsed_kaardid
+
+    if aktiivsed_kaardid:
+        kaardi_indeks = min(kaardi_indeks + 1, len(aktiivsed_kaardid) - 1)
+        naita_kaart()
+
+def eelmine_kaart():
+    global kaardi_indeks
+    global aktiivsed_kaardid
+
+    if aktiivsed_kaardid:
+        kaardi_indeks = max(kaardi_indeks - 1, 0)
+        naita_kaart()
+
+
+if __name__ == '__main__':
+    
+    uhendus = sqlite3.connect('flashcards.db')
+    loo_tabelid(uhendus)
+    
+    root = tk.Tk()
+    root.title('Õppekaardid')
+    root.geometry('900x650')
+
+    # ---> õrn roosa taust põhjakihina
+    root.configure(bg='#ffe4f1')
+
+    # ---> ttkbootstrap stiil: roosakam “cosmo/pulse” sobib hästi
+    stiil = Style(theme='pulse')
+
+    # ---> ilusam üldfont ja suuremad kirjad
+    põhifont = ('Segoe UI', 12)
+    pealkiri_font = ('Segoe UI Semibold', 20)
+    suur_font = ('Segoe UI Semibold', 16)
+
+    stiil.configure('.', font=põhifont)
+    stiil.configure('TLabel', background='#ffe4f1')
+    stiil.configure('TFrame', background='#ffe4f1')
+
+    # ---> notebooki ja tabide stiil
+    stiil.configure('TNotebook', padding=10)
+    stiil.configure('TNotebook.Tab', padding=[20, 8], font=('Segoe UI Semibold', 12))
+
+    # ---> nupud suuremaks ja roosakaks
+    stiil.configure(
+        'TButton',
+        font=('Segoe UI Semibold', 14),
+        padding=10
+    )
+
+    seti_nimi_var = tk.StringVar()
+    sona_var = tk.StringVar()
+    definitsioon_var = tk.StringVar()
+    
+    # ---> väike “card” stiilis raam sisu jaoks
+    main_frame = ttk.Frame(root, padding=20, bootstyle='light')
+    main_frame.pack(fill='both', expand=True, padx=20, pady=20)
+    
+    notebook = ttk.Notebook(main_frame)
+    notebook.pack(fill='both', expand=True)
+    
+    loo_set_raam = ttk.Frame(notebook, padding=20)
+    notebook.add(loo_set_raam, text="Loo set")
+
+    mata_tab = ttk.Frame(notebook, padding=20)
+    notebook.add(mata_tab, text="Kõrge matemaatika alused")
+
+    # Tervitustekst
+    ttk.Label(
+        mata_tab,
+        text="Tere tulemast kõrge matemaatika alustesse!",
+        font=pealkiri_font
+    ).pack(padx=10, pady=20)
+
+    ttk.Button(
+        mata_tab,
+        text="Hakkame õppima",
+        bootstyle='outline-danger'  # roosakas/punakas nupp
+    ).pack(padx=10, pady=10)
+
+    # --- LOO SET TAB ---
+
+    ttk.Label(loo_set_raam, text='Seti nimi:', font=suur_font).pack(padx=5, pady=(0, 5), anchor='w')
+    ttk.Entry(loo_set_raam, textvariable=seti_nimi_var, width=35).pack(padx=5, pady=5, fill='x')
+
+    ttk.Label(loo_set_raam, text='Küsimus:', font=suur_font).pack(padx=5, pady=(15, 5), anchor='w')
+    ttk.Entry(loo_set_raam, textvariable=sona_var, width=35).pack(padx=5, pady=5, fill='x')
+
+    ttk.Label(loo_set_raam, text='Vastus:', font=suur_font).pack(padx=5, pady=(15, 5), anchor='w')
+    ttk.Entry(loo_set_raam, textvariable=definitsioon_var, width=35).pack(padx=5, pady=5, fill='x')
+    
+    # Nupp lisamiseks
+    ttk.Button(
+        loo_set_raam,
+        text="Lisa küsimus",
+        command=lisa_sona,
+        bootstyle='danger'
+    ).pack(padx=5, pady=15)
+
+    # Nupp salvestamiseks
+    ttk.Button(
+        loo_set_raam,
+        text="Salvesta set",
+        command=loo_set,
+        bootstyle='outline-danger'
+    ).pack(padx=5, pady=5)
+    
+    # --- VALI SET TAB ---
+    vali_set_raam = ttk.Frame(notebook, padding=20)
+    notebook.add(vali_set_raam, text='Vali set')
+    
+    ttk.Label(vali_set_raam, text='Vali set:', font=suur_font).pack(padx=5, pady=(0, 10))
+
+    seti_valik = ttk.Combobox(vali_set_raam, state='readonly', width=30)
+    seti_valik.pack(padx=5, pady=10)
+    
+    ttk.Button(
+        vali_set_raam,
+        text='Vali set',
+        command=vali_set,
+        bootstyle='danger'
+    ).pack(padx=5, pady=10)
+    
+    ttk.Button(
+        vali_set_raam,
+        text='Kustuta set',
+        command=kustuta_valitud_set,
+        bootstyle='outline-danger'
+    ).pack(padx=5, pady=5)
+
+    # --- ÕPIME TAB ---
+    õpi_raam = ttk.Frame(notebook, padding=20)
+    notebook.add(õpi_raam, text='Õpime')
+    
+    kaardi_indeks = 0
+    vahekaardid  = []
+    
+    sona_silt = ttk.Label(õpi_raam, text='', font=('Segoe UI Semibold', 24))
+    sona_silt.pack(padx=5, pady=40)
+    
+    definitsiooni_silt = ttk.Label(õpi_raam, text='', font=põhifont, wraplength=600)
+    definitsiooni_silt.pack(padx=5, pady=5)
+    
+    nupu_raam = ttk.Frame(õpi_raam)
+    nupu_raam.pack(pady=20)
+
+    ttk.Button(
+        nupu_raam,
+        text='Eelmine',
+        command=eelmine_kaart,
+        bootstyle='outline-danger',
+        width=12
+    ).pack(side='left', padx=10)
+
+    ttk.Button(
+        nupu_raam,
+        text='Flip',
+        command=pööra_kaart,
+        bootstyle='danger',
+        width=12
+    ).pack(side='left', padx=10)
+
+    ttk.Button(
+        nupu_raam,
+        text='Järgmine',
+        command=järgmine_kaart,
+        bootstyle='outline-danger',
+        width=12
+    ).pack(side='left', padx=10)
+    
+    taida_seti_valik()
+    
+    root.mainloop()
