@@ -1,5 +1,5 @@
 """
-Projekt: Õppekaardid (CustomTkinter pastelne versioon progressbariga)
+Projekt: Õppekaardid (Flashcards)
 Autorid: Annabel Jürjenson, Minna Marie Kask
 Kirjeldus:
 Kasutaja saab valida õppimiseks valmis komplekti õppekaarte või ise komplekt luua.
