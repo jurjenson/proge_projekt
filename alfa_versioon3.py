@@ -242,7 +242,7 @@ def eelmine_kaart():
 
 
 # ---------------- JSON ----------------
-def loe_mata_json(path="kõrgemmata.json"):
+def loe_mata_json(path="korgemmata.json"):
     with open(path, "r", encoding="utf-8") as f:
         data = json.load(f)
     return [(item["küsimus"], item["vastus"]) for item in data["kaardid"]]
@@ -251,13 +251,13 @@ def loe_mata_json(path="kõrgemmata.json"):
 def hakka_oppima():
     global aktiivsed_kaardid, kaardi_indeks, näitab_vastust
     try:
-        aktiivsed_kaardid = loe_mata_json("kõrgemmata.json")
+        aktiivsed_kaardid = loe_mata_json("korgemmata.json")
         kaardi_indeks = 0
         näitab_vastust = False
         naita_kaart()
         tabview.set("Õpime")
     except FileNotFoundError:
-        messagebox.showerror("Viga", "JSON faili ei leitud: kõrgemmata.json")
+        messagebox.showerror("Viga", "JSON faili ei leitud: korgemmata.json")
     except Exception as e:
         messagebox.showerror("Viga", f"JSON lugemine ebaõnnestus: {e}")
 
