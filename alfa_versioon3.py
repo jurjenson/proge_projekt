@@ -248,7 +248,7 @@ def loe_mata_json(path="kõrgemmata.json"):
     return [(item["küsimus"], item["vastus"]) for item in data["kaardid"]]
 
 
-def hakka_opppima():
+def hakka_oppima():
     global aktiivsed_kaardid, kaardi_indeks, näitab_vastust
     try:
         aktiivsed_kaardid = loe_mata_json("kõrgemmata.json")
@@ -630,7 +630,7 @@ if __name__ == "__main__":
         hover_color="#9ec8ff",
         text_color=TEXT_DARK,
         corner_radius=20,
-        command=hakka_opppima
+        command=hakka_oppima
     )
     btn_hakka.pack(pady=10); lisa_kursor(btn_hakka)
 
