@@ -332,10 +332,6 @@ def pööra_kaart(): # pöörab kaardi küsimuse ja vastuse vahel
     uuenda_progress()
 
 
-def lisa_kursor(btn): # muudab nupu kursorit hoveril
-    btn.bind("<Enter>", lambda e, b=btn: b.configure(cursor="hand2"))
-    btn.bind("<Leave>", lambda e, b=btn: b.configure(cursor=""))
-
 
 # ---------------- GRADIENT ----------------
 
@@ -463,14 +459,14 @@ if __name__ == "__main__": # peamine rakenduse tsükkel
         nuppude_frame_looset, text="Lisa küsimus", command=lisa_sona,
         font=suur_font, fg_color=ACCENT_MAIN, hover_color=ACCENT_MAIN_DARK, corner_radius=20
     )
-    btn_lisa.pack(side="left", padx=10); lisa_kursor(btn_lisa)
+    btn_lisa.pack(side="left", padx=10)
 
     btn_salvesta = ctk.CTkButton(
         nuppude_frame_looset, text="Salvesta set", command=loo_set,
         font=suur_font, fg_color="#ffffff", text_color=ACCENT_MAIN,
         hover_color="#fdf1f7", border_width=2, border_color=ACCENT_MAIN, corner_radius=20
     )
-    btn_salvesta.pack(side="left", padx=10); lisa_kursor(btn_salvesta)
+    btn_salvesta.pack(side="left", padx=10)
 
     # ---------- VALI SET ----------
     valiset_frame = ctk.CTkFrame(tab_valiset, fg_color="transparent")
@@ -493,14 +489,14 @@ if __name__ == "__main__": # peamine rakenduse tsükkel
         nuppude_frame_valiset, text="Vali set", command=vali_set,
         font=suur_font, fg_color=ACCENT_MAIN, hover_color=ACCENT_MAIN_DARK, corner_radius=20
     )
-    btn_vali.pack(side="left", padx=10); lisa_kursor(btn_vali)
+    btn_vali.pack(side="left", padx=10)
 
     btn_kustuta = ctk.CTkButton(
         nuppude_frame_valiset, text="Kustuta set", command=kustuta_valitud_set,
         font=suur_font, fg_color="#ffffff", text_color=ACCENT_MAIN,
         hover_color="#fdf1f7", border_width=2, border_color=ACCENT_MAIN, corner_radius=20
     )
-    btn_kustuta.pack(side="left", padx=10); lisa_kursor(btn_kustuta)
+    btn_kustuta.pack(side="left", padx=10)
 
     # ---------- ÕPIME ----------
     õpi_frame = ctk.CTkFrame(tab_õpi, fg_color="transparent")
@@ -585,7 +581,7 @@ if __name__ == "__main__": # peamine rakenduse tsükkel
         border_color=ACCENT_MAIN,
         corner_radius=20
     )
-    eelmine_btn.pack(side="left", padx=10); lisa_kursor(eelmine_btn)
+    eelmine_btn.pack(side="left", padx=10)
 
     flip_button = ctk.CTkButton(
         btn_wrap,
@@ -601,7 +597,7 @@ if __name__ == "__main__": # peamine rakenduse tsükkel
         border_color=ACCENT_MAIN,
         corner_radius=20
     )
-    flip_button.pack(side="left", padx=10); lisa_kursor(flip_button)
+    flip_button.pack(side="left", padx=10)
 
     järgmine_btn = ctk.CTkButton(
         btn_wrap,
@@ -617,7 +613,7 @@ if __name__ == "__main__": # peamine rakenduse tsükkel
         border_color=ACCENT_MAIN,
         corner_radius=20
     )
-    järgmine_btn.pack(side="left", padx=10); lisa_kursor(järgmine_btn)
+    järgmine_btn.pack(side="left", padx=10)
 
     # ---------- MATA ----------
     
@@ -648,7 +644,7 @@ if __name__ == "__main__": # peamine rakenduse tsükkel
         corner_radius=20,
         command=hakka_oppima
     )
-    btn_hakka.pack(pady=10); lisa_kursor(btn_hakka)
+    btn_hakka.pack(pady=10)
 
     # init
     taida_seti_valik()
