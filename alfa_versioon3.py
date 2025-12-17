@@ -502,7 +502,7 @@ if __name__ == "__main__":
 
     for r in range(4):
         center.grid_rowconfigure(r, weight=0)
-    center.grid_rowconfigure(0, weight=1)  # kaart saab "veniva" ruumi
+    center.grid_rowconfigure(0, weight=1)  # kaart täidab ülejäänud ruumi
     center.grid_columnconfigure(0, weight=1)
 
     CARD_W, CARD_H = 620, 300
