@@ -6,7 +6,7 @@ Kasutaja saab valida õppimiseks valmis komplekti õppekaarte või ise komplekt 
 Valmis komplektina on kasutamiseks kursuse "Kõrgem matemaatika I (alused)" õppekaardid.
 """
 
-import sqlite3
+import sqlite3 # andmebaas
 import tkinter as tk
 from tkinter import messagebox
 import customtkinter as ctk
@@ -14,6 +14,7 @@ import json
 
 
 # ---------------- VÄRVIPALETT ----------------
+
 PASTEL_TOP = "#ffe7f3"
 PASTEL_BOTTOM = "#e3f6ff"
 ACCENT_MAIN = "#f6aecb"
@@ -49,7 +50,8 @@ gradient_after_id = None
 
 
 # ---------------- DB FUNKTSIOONID ----------------
-def loo_tabelid(conn):
+
+def loo_tabelid(conn):   # loob tabelid andmebaasi, kui neid juba pole
     cur = conn.cursor()
     cur.execute("""
         CREATE TABLE IF NOT EXISTS flashcard_sets (
@@ -68,31 +70,31 @@ def loo_tabelid(conn):
     """)
 
 
-def lisa_set(conn, nimi):
+def lisa_set(conn, nimi): # lisab uue rea flashcard_sets tabelisse
     cur = conn.cursor()
     cur.execute("INSERT INTO flashcard_sets (name) VALUES (?)", (nimi,))
     conn.commit()
     return cur.lastrowid
 
 
-def lisa_kaart(conn, seti_id, sona, definitsioon):
+def lisa_kaart(conn, seti_id, sona, definitsioon): # lisab uue kaardi flashcards tabelisse
     cur = conn.cursor()
     cur.execute(
         "INSERT INTO flashcards (set_id, word, definition) VALUES (?, ?, ?)",
         (seti_id, sona, definitsioon),
     )
     conn.commit()
-    return cur.lastrowid
+    return cur.lastrowid # tagastab lisatud kaardi id
 
 
-def saa_setid(conn):
+def saa_setid(conn): # tagastab kõik setid sõnastikuna {nimi: id}, kuna see on mugavam
     cur = conn.cursor()
     cur.execute("SELECT id, name FROM flashcard_sets")
     rows = cur.fetchall()
     return {name: _id for (_id, name) in rows}
 
 
-def saa_kaardid(conn, seti_id):
+def saa_kaardid(conn, seti_id): # tagastab kõik kaardid antud seti id järgi
     cur = conn.cursor()
     cur.execute("SELECT word, definition FROM flashcards WHERE set_id = ?", (seti_id,))
     rows = cur.fetchall()
@@ -124,6 +126,7 @@ def kustuta_set(conn, seti_id):
 
 
 # ---------------- SETID / KAARDID ----------------
+
 def loo_set():
     nimi = seti_nimi_var.get().strip()
     if not nimi:
@@ -138,7 +141,7 @@ def loo_set():
     definitsioon_var.set("")
 
 
-def lisa_sona():
+def lisa_sona(): # leiab id jargi seti ning lisab uue kaardi
     seti_nimi = seti_nimi_var.get().strip()
     sona = sona_var.get().strip()
     definitsioon = definitsioon_var.get().strip()
@@ -156,7 +159,7 @@ def lisa_sona():
     taida_seti_valik()
 
 
-def taida_seti_valik():
+def taida_seti_valik(): # täidab seti valiku comboboxi andmebaasi setidega
     if seti_valik is None:
         return
     setid = tuple(saa_setid(uhendus).keys())
@@ -204,7 +207,7 @@ def vali_set():
     naita_kaart()
 
 
-def clear_kaardid():
+def clear_kaardid(): # tühjendab kaardi kuva
     _set_card_text("")
     _set_mode("KÜSIMUS")
     uuenda_progress()
@@ -212,7 +215,7 @@ def clear_kaardid():
 
 def naita_kaart():
     global näitab_vastust
-    näitab_vastust = False
+    näitab_vastust = False # alati näita küsimust esialgu
 
     if aktiivsed_kaardid and 0 <= kaardi_indeks < len(aktiivsed_kaardid):
         küsimus, _ = aktiivsed_kaardid[kaardi_indeks]
@@ -229,7 +232,7 @@ def järgmine_kaart():
     global kaardi_indeks
     if not aktiivsed_kaardid:
         return
-    kaardi_indeks = min(kaardi_indeks + 1, len(aktiivsed_kaardid) - 1)
+    kaardi_indeks = min(kaardi_indeks + 1, len(aktiivsed_kaardid) - 1) # ei lähe üle viimase kaardi
     naita_kaart()
 
 
@@ -237,7 +240,7 @@ def eelmine_kaart():
     global kaardi_indeks
     if not aktiivsed_kaardid:
         return
-    kaardi_indeks = max(kaardi_indeks - 1, 0)
+    kaardi_indeks = max(kaardi_indeks - 1, 0) # sama loogika, ei lase minna all 0
     naita_kaart()
 
 
@@ -263,12 +266,13 @@ def hakka_oppima():
 
 
 # ---------------- UI HELPERS ----------------
+
 def _set_mode(text):
     if mode_label is not None:
         mode_label.configure(text=text)
 
 
-def _set_card_text(text):
+def _set_card_text(text): # seab teksti kuvamise kaardil
     if card_box is None:
         return
     card_box.configure(state="normal")
@@ -291,23 +295,11 @@ def uuenda_progress():
         progress_label.configure(text="0 / 0")
 
 
-def pulse_button(btn):
-    if btn is None:
-        return
-    try:
-        orig = btn.cget("fg_color")
-        btn.configure(fg_color=ACCENT_MAIN_DARK)
-        root.after(120, lambda: btn.configure(fg_color=orig))
-    except Exception:
-        pass
-
 
 def pööra_kaart():
     global näitab_vastust
     if not (aktiivsed_kaardid and 0 <= kaardi_indeks < len(aktiivsed_kaardid)):
         return
-
-    pulse_button(flip_button)
 
     küsimus, vastus = aktiivsed_kaardid[kaardi_indeks]
     näitab_vastust = not näitab_vastust
@@ -327,7 +319,7 @@ def lisa_kursor(btn):
     btn.bind("<Leave>", lambda e, b=btn: b.configure(cursor=""))
 
 
-# ---------------- GRADIENT (NO RECURSION) ----------------
+# ---------------- GRADIENT ----------------
 def joonista_gradient(canvas, värv1=PASTEL_TOP, värv2=PASTEL_BOTTOM):
     w = max(canvas.winfo_width(), 1)
     h = max(canvas.winfo_height(), 1)
@@ -348,7 +340,7 @@ def joonista_gradient(canvas, värv1=PASTEL_TOP, värv2=PASTEL_BOTTOM):
     canvas.lower("gradient")
 
 
-def schedule_gradient_redraw(canvas):
+def schedule_gradient_redraw(canvas): # redraw rebounce, teeb UI sujuvamaks, kui akent rezisetakse, voib crashida voi UI palju uuesti joonistada
     global gradient_after_id
     if gradient_after_id is not None:
         try:
@@ -359,6 +351,7 @@ def schedule_gradient_redraw(canvas):
 
 
 # ---------------- MAIN ----------------
+
 if __name__ == "__main__":
     uhendus = sqlite3.connect("flashcards.db")
     uhendus.execute("PRAGMA foreign_keys = ON;")
@@ -376,7 +369,7 @@ if __name__ == "__main__":
 
     # Gradient background
     gradient_canvas = tk.Canvas(root, highlightthickness=0, bd=0)
-    gradient_canvas.place(relx=0, rely=0, relwidth=1, relheight=1)
+    gradient_canvas.place(relx=0, rely=0, relwidth=1, relheight=1) # täisekraanina rooti peale
     root.bind("<Configure>", lambda e: schedule_gradient_redraw(gradient_canvas))
 
     # Fontid
@@ -489,7 +482,7 @@ if __name__ == "__main__":
     )
     btn_kustuta.pack(side="left", padx=10); lisa_kursor(btn_kustuta)
 
-    # ---------- ÕPIME (GRID, PÄRISELT KESKEL) ----------
+    # ---------- ÕPIME ----------
     õpi_frame = ctk.CTkFrame(tab_õpi, fg_color="transparent")
     õpi_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
@@ -642,3 +635,4 @@ if __name__ == "__main__":
     schedule_gradient_redraw(gradient_canvas)
 
     root.mainloop()
+    uhendus.close()
