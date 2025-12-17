@@ -612,14 +612,14 @@ if __name__ == "__main__":
 
     ctk.CTkLabel(
         mata_frame,
-        text="Tere tulemast kõrge matemaatika alustesse!",
+        text="Teretulemast kõrgema matemaatika alustesse!",
         font=pealkiri_font,
         text_color=ACCENT_MAIN
     ).pack(pady=(20, 8))
 
     ctk.CTkLabel(
         mata_frame,
-        text="Siia saad lisada eraldi info, lingid, ülesanded jne.",
+        text="KM I õppekaardid on koostatud loengukonspekti põhjal,\net aidata Sul praktikumiks, kontrolltööks \nvõi eksamiks ettevalmistuda.\nEdu!",
         font=põhifont,
         text_color=TEXT_SOFT
     ).pack(pady=(0, 20))
