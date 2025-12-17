@@ -319,6 +319,8 @@ def pööra_kaart():
         _set_mode("KÜSIMUS")
         _set_card_text(küsimus)
 
+    uuenda_progress()
+
 
 def lisa_kursor(btn):
     btn.bind("<Enter>", lambda e, b=btn: b.configure(cursor="hand2"))
@@ -402,7 +404,7 @@ if __name__ == "__main__":
     tab_looset = tabview.add("Loo set")
     tab_valiset = tabview.add("Vali set")
     tab_õpi = tabview.add("Õpime")
-    tab_mata = tabview.add("Kõrge matemaatika alused")
+    tab_mata = tabview.add("Kõrgem matemaatika I (alused)")
 
     tabview._segmented_button.configure(
         font=tab_font,
