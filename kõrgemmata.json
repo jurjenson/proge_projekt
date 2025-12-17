@@ -28,7 +28,41 @@
             "vastus":"1. avalda võrrandist y = f(x) muutuja x muutuja y kaudu, 2. vaheta tähised x ja y, 3. kirjuta välja pöördfunktsioon"},
         {
             "küsimus":"Funktsioon f on pidev hulgal X, kui", 
-            "vastus":"f on pidev selle hulga igas punktis"
+            "vastus":"f on pidev selle hulga igas punktis"},
+
+        {   "küsimus":"Mis on funktsiooni pidevuse tingimus punktis x0?", 
+            "vastus":"lim (x->x0) f(x) = f(x0)"},
+
+        {   "küsimus":"Öeldakse, et funktsioon f on diferentseeruv punktis x0, kui", 
+            "vastus":"funktsiooni f lõplik tuletis punktis x0 eksisteerib"},
+
+        {   "küsimus":"Funktsiooni graafiku puutuja võrrand punktis x0 on", 
+            "vastus":"y = f'(x0)(x - x0) + f(x0)"},
+
+        {   "küsimus":"Kuidas leida funktsiooni kasvamise ja kahanemise vahemikke?", 
+            "vastus":"1. Leia funktsiooni tuletis f'(x). 2. Leia tuletise nullkohad ja määramispiirkonna ääred. 3. Määra tuletise märgid saadud vahemikes. 4. Funktsioon kasvab seal, kus tuletis on positiivne, ja kahaneb seal, kus tuletis on negatiivne."},
+
+        {   "küsimus":"Mittekoonduvaid päratuid integraale nimetatakse ...", 
+            "vastus":"hajuvateks"},
+
+        {   "küsimus":"Jada nimetatakse monotoonseks, kui",
+            "vastus":"ta on kas kasvav või kahanev"},
+
+        {   "küsimus":"Mis on monotoonsusprintsiip?",
+            "vastus":"Monotoonne jada koondub parajasti siis, kui ta on tõkestatud"},
+
+        {   "küsimus":"Millal nimetatakse ruutmaatriksit kolmnurkseks?",
+            "vastus":"kui kõik elemendid peadiagonaali ühel või teisel pool on nullid"},
+
+        {   "küsimus":"Mis on maatriksi transponeerimine?",
+            "vastus":"veergude ja ridade vahetus"},
+
+        {   "küsimus":"Maatriksi A vastandmaatriks",
+            "vastus":"-A"},
+            
+        {   "küsimus":"Millal nimetatakse ruutmaatriksit kolmnurkseks?", 
+            "vastus":"regulaarseks" 
         }
+
     ]
 }
