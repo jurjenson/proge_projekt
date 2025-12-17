@@ -320,6 +320,7 @@ def lisa_kursor(btn):
 
 
 # ---------------- GRADIENT ----------------
+# ---------------- GRADIENT ----------------
 def joonista_gradient(canvas, värv1=PASTEL_TOP, värv2=PASTEL_BOTTOM):
     w = max(canvas.winfo_width(), 1)
     h = max(canvas.winfo_height(), 1)
@@ -605,14 +606,14 @@ if __name__ == "__main__":
 
     ctk.CTkLabel(
         mata_frame,
-        text="Tere tulemast kõrge matemaatika alustesse!",
+        text="Teretulemast kõrgema matemaatika alustesse!",
         font=pealkiri_font,
         text_color=ACCENT_MAIN
     ).pack(pady=(20, 8))
 
     ctk.CTkLabel(
         mata_frame,
-        text="Siia saad lisada eraldi info, lingid, ülesanded jne.",
+        text="KM I õppekaardid on koostatud loengukonspekti põhjal,\net aidata Sul praktikumiks, kontrolltööks \nvõi eksamiks ettevalmistuda.\nEdu!",
         font=põhifont,
         text_color=TEXT_SOFT
     ).pack(pady=(0, 20))
