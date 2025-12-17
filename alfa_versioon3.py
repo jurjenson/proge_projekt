@@ -327,7 +327,7 @@ def lisa_kursor(btn):
     btn.bind("<Leave>", lambda e, b=btn: b.configure(cursor=""))
 
 
-# ---------------- GRADIENT (NO RECURSION) ----------------
+# ---------------- GRADIENT ----------------
 def joonista_gradient(canvas, värv1=PASTEL_TOP, värv2=PASTEL_BOTTOM):
     w = max(canvas.winfo_width(), 1)
     h = max(canvas.winfo_height(), 1)
@@ -489,7 +489,7 @@ if __name__ == "__main__":
     )
     btn_kustuta.pack(side="left", padx=10); lisa_kursor(btn_kustuta)
 
-    # ---------- ÕPIME (GRID, PÄRISELT KESKEL) ----------
+    # ---------- ÕPIME (GRID, KESKEL) ----------
     õpi_frame = ctk.CTkFrame(tab_õpi, fg_color="transparent")
     õpi_frame.pack(fill="both", expand=True, padx=10, pady=10)
 
