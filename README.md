@@ -69,7 +69,7 @@ Iga kaardi kohta salvestatakse:
 
 ---
 
-## Projekti struktuur (loogiline)
+## Projekti struktuur 
 
 - **Andmebaasi kiht**
   - tabelite loomine
