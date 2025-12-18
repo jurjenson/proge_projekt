@@ -25,7 +25,7 @@
             "vastus":"Funktsioon f on pööratav parajasti siis, kui ta on üksühene"},
         {
             "küsimus":"Pöörfunktsiooni leidmiseks vajalikud sammud", 
-            "vastus":"1. avalda võrrandist y = f(x) muutuja x muutuja y kaudu, 2. vaheta tähised x ja y, 3. kirjuta välja pöördfunktsioon"},
+            "vastus":"1. Avalda võrrandist y = f(x) muutuja x muutuja y kaudu, \n2. Vaheta tähised x ja y,\n 3. Kirjuta välja pöördfunktsioon"},
         {
             "küsimus":"Funktsioon f on pidev hulgal X, kui", 
             "vastus":"f on pidev selle hulga igas punktis"},
@@ -46,23 +46,116 @@
             "vastus":"hajuvateks"},
 
         {   "küsimus":"Jada nimetatakse monotoonseks, kui",
-            "vastus":"ta on kas kasvav või kahanev"},
+            "vastus":"Ta on kas kasvav või kahanev"},
 
         {   "küsimus":"Mis on monotoonsusprintsiip?",
             "vastus":"Monotoonne jada koondub parajasti siis, kui ta on tõkestatud"},
 
         {   "küsimus":"Millal nimetatakse ruutmaatriksit kolmnurkseks?",
-            "vastus":"kui kõik elemendid peadiagonaali ühel või teisel pool on nullid"},
+            "vastus":"Kui kõik elemendid peadiagonaali ühel või teisel pool on nullid"},
 
         {   "küsimus":"Mis on maatriksi transponeerimine?",
-            "vastus":"veergude ja ridade vahetus"},
+            "vastus":"Veergude ja ridade vahetus"},
 
         {   "küsimus":"Maatriksi A vastandmaatriks",
             "vastus":"-A"},
             
         {   "küsimus":"Millal nimetatakse ruutmaatriksit kolmnurkseks?", 
-            "vastus":"regulaarseks" 
-        }
+            "vastus":"regulaarseks"},
 
+        {   "küsimus":"Maatriksite korrutamise tingimus", 
+            "vastus":"Esimese maatriksi veergude arv peab olema võrdne teise maatriksi ridade arvuga"},
+
+        {   "küsimus":"Maatriksite liitmise tingimus", 
+            "vastus":"Maatrikside mõõtmed peavad olema võrdsed"},
+
+        {   "küsimus":"Mis on ühikmaatriks?", 
+            "vastus":"Ruutmaatriks, mille peadiagonaali elemendid on 1 ja kõik teised elemendid on 0"},
+
+        {   "küsimus":"Millised omadused kehtivad maatriksite liitmisel?", 
+            "vastus":"Liitmisel kehtib liitmise kommutatiivsus ja assotsiatiivsus"},
+
+        {   "küsimus":"Millised omadused kehtivad maatriksite korrutamisel?", 
+            "vastus":"Korrutamisel kehtib assotsiatiivsus ja distributiivsus, kuid mitte kommutatiivsus"},
+
+        {   "küsimus":"Mis on maatriksi determinandi geomeetriline tähendus?", 
+            "vastus":"Ruutmaatriksi determinandi absoluutväärtus annab maatriksiga defineeritud lineaarteisenduse piltkujundi pindala (2D) või ruumala (3D)"},
+
+        {   "küsimus":"Maatriksi A korrutis oma pöördmaatriksiga A^-1 on võrdne ...", 
+            "vastus":"ühikmaatriksiga"},
+
+        {   "küsimus":"Ruutmaatriksit A, mille determinent on null, nimetatakse ...", 
+            "vastus":"singularseks maatriksiks" },
+
+        {   "küsimus":"Mis on maatriksi transponeerimise omadus determinandi suhtes?",
+            "vastus":"Maatriksi ja tema transponeeritud maatriksi determinandid on võrdsed" },
+
+        {   "küsimus":"Kui mingi rea või veeru kõik elemendid on nullid, siis determinant võrdub ...", 
+            "vastus":"nulliga" },
+
+        {   "küsimus":"Kahe võrdse rea või veeru korral on determinandi väärtus ...",
+            "vastus":"null" },
+
+        {   "küsimus":"Determinandi väärtus ei muutu, kui ...", 
+            "vastus":"lisada mingi rea või veeru elementidele mingi teise rea või veeru elementide lineaarne kombinatsioon" },
+
+        {   "küsimus":"Maatriksi astmete arvuks nimetatakse ...",
+            "vastus":"astmelise maatriksi ridade arvu, millel leidub vähemalt üks nullist erinev element." },
+
+        {   "küsimus":"rank A tähistab ...",
+            "vastus":"maatriksi A astakut ning näitab astmete arvu tema astmelises kujus."},
+
+        {   "küsimus":"Süsteemi nimetatakse vasturääkivaks, kui ...",
+            "vastus":"süsteemil puudub lahend" },
+
+        {   "küsimus":"Süsteemi nimetatakse määratletuks, kui ...",
+            "vastus":"süsteemil on lõplik arv lahendeid" },
+
+        {   "küsimus":"Süsteemi nimetatakse määramatuks, kui ...",
+            "vastus":"süsteemil on lõpmatu arv lahendeid" },
+
+        {   "küsimus":"Vektorid on kollineaarsed, kui ...",
+            "vastus":"nad on paralleelsed" },
+
+        {   "küsimus":"Vektorite skalaarkorrutiseks nimetatakse ...",
+            "vastus":"kahe vektori pikkuste ja nendevahelise nurga koosinuse korrutist" },
+
+        {   "küsimus":"Vektorite vektorkorrutiseks nimetatakse ...",
+            "vastus":"vektorit, mille pikkus on võrdne kahe vektori pikkuste ja nendevahelise nurga siinuse korrutisega ning suund on määratud parema käe reegliga"},
+
+        {   "küsimus":"Vektorid on kollineaarsed parajasti siis, kui ...",
+            "vastus":"nende koordinaadid on võrdelised" },
+
+        {   "küsimus":"Vektori pikkus võrdub ...",
+            "vastus":"ruutjuurega koordinaatide ruutude summast" },
+
+        {   "küsimus":"Mis on vektori ühikvektor?", 
+            "vastus":"vektor, mille pikkus on 1" },
+
+        {   "küsimus":"Lineaarteisenduse korral peab kehtima ... (2 tingimust)",
+            "vastus":"Aditiivsus ja homogeensus" },
+
+        {   "küsimus":"Elementaarfunktsioonideks nimetatakse funktsioone, mis ...",
+            "vastus":"saab moodustada lõpliku arvu artimeetiliste tehete ja liitfunktsiooni moodustamise abil" },
+
+        {   "küsimus":"Mis on funktsiooni käänupunkt?",
+            "vastus":"punkt, kus funktsiooni kõverus muutub" },
+
+        {   "küsimus":"Funktsiooni tuletise leidmist nimetatakse funktsiooni ...",
+            "vastus":"diferentseerimiseks" },
+
+        {   "küsimus":"Mis on määramispiirkond?",
+            "vastus":"Kõik need x väärtused, mille korral funktsioon on defineeritud" },
+
+        {   "küsimus":"Mis on muutumispiirkond?",
+            "vastus":"Kõik need y väärtused, mida funktsioon võib omada" },
+
+        {   "küsimus":"Määramatused, mille korral kasutada L'Hospitali reeglit",
+            "vastus":"0/0 ja ∞/∞" },
+
+        {   "küsimus":"Mis on funktsiooni asümptoot?",
+            "vastus":"Sirge, millele funktsiooni graafik läheneb lõpmatuses" }
+
+        
     ]
 }
