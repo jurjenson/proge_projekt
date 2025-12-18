@@ -6,7 +6,6 @@ Kasutaja saab valida õppimiseks valmis komplekti õppekaarte või ise komplekt 
 Valmis komplektina on kasutamiseks kursuse "Kõrgem matemaatika I (alused)" õppekaardid.
 Enne programmi kasutamist tuleb paigaldada vajalikud teegid:
 pip install customtkinter
-pip install tk
 Programm kasutab andmebaasina SQLite'i, mis on Pythoniga kaasas.
 Lisaks on võimalik importida kaardid JSON-failist nimega "korgemmata.json".
 JSON-faili struktuur peab olema järgmine:
